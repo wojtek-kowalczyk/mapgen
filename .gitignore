@@ -1,0 +1,6 @@
+*.o
+moc_*
+MapGen
+.qmake.stash
+Makefile
+*.pro
