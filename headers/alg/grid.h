@@ -13,6 +13,7 @@ template <typename T> class Grid
     Grid(const Grid& other);
     Grid& operator=(const Grid& other);
     T* operator[](int idx);
+    operator T**();
 };
 
 template <typename T> Grid<T>::Grid(int width, int height)
@@ -80,4 +81,9 @@ template <typename T> Grid<T>& Grid<T>::operator=(const Grid& other)
 template <typename T> T* Grid<T>::operator[](int idx)
 {
     return this->data[idx];
+}
+
+template <typename T> Grid<T>::operator T**()
+{
+    return this->data;
 }
