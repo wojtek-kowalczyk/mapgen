@@ -1,9 +1,7 @@
 #include "headers/settingsPanel.h"
 #include "headers/config.h"
 
-#include <QComboBox>
 #include <QLabel>
-#include <QPushButton>
 #include <QVBoxLayout>
 
 SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
@@ -12,7 +10,7 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QVBoxLayout* settingsLayout = new QVBoxLayout(this);
 
     // Items
-    QComboBox* dropdown = new QComboBox();
+    dropdown = new QComboBox();
     dropdown->addItem("Algorithm 1");
     dropdown->addItem("Algorithm 2");
     dropdown->addItem("Algorithm 3");
@@ -21,19 +19,26 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QLabel* label3 = new QLabel("Label 3");
     label1->setStyleSheet("background-color: grey");
     QPushButton* generateButton = new QPushButton("Generate");
-    QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(tmp_buttonClick()));
+    QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
+
+    // temp - this should be replaced by algorithm specific class deriving from QGroupBox
+    QGroupBox* tempGroupBox = new QGroupBox{"Algorithm settings"};
+    QVBoxLayout* tempBoxLayout = new QVBoxLayout(tempGroupBox);
+    tempBoxLayout->addStretch();
 
     settingsLayout->addWidget(label1);
     settingsLayout->addWidget(label2);
     settingsLayout->addWidget(label3);
     settingsLayout->addWidget(dropdown);
+    settingsLayout->addWidget(tempGroupBox);
     settingsLayout->addStretch();
     settingsLayout->addWidget(generateButton);
 }
 
-// temp - remove later
-#include <iostream>
-void SettingsPanel::tmp_buttonClick()
+void SettingsPanel::onGenerateButtonClicked()
 {
-    std::cout << "button was clicked\n";
+}
+
+void SettingsPanel::onSaveButtonClicked()
+{
 }
