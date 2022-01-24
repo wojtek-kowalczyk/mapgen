@@ -1,6 +1,6 @@
 #include "headers/settingsPanel.h"
 #include "headers/config.h"
-
+#include "headers/imageGenerator.h"
 #include "headers/whiteNoiseSP.h"
 #include <QLabel>
 #include <QVBoxLayout>
@@ -22,7 +22,6 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QPushButton* generateButton = new QPushButton("Generate");
     QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
 
-    // todo - continue working on this
     WhiteNoiseSettingsPanel* whiteNoiseSP = new WhiteNoiseSettingsPanel{this};
 
     settingsLayout->addWidget(label1);

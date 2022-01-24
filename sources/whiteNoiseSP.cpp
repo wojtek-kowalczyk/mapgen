@@ -1,7 +1,6 @@
 #include "headers/whiteNoiseSP.h"
+#include "alg/headers/whiteNoise.h"
 #include <QFormLayout>
-#include <cstdlib>
-#include <ctime>
 
 WhiteNoiseSettingsPanel::WhiteNoiseSettingsPanel(QWidget* parent) : QGroupBox{parent}
 {
@@ -26,16 +25,5 @@ WhiteNoiseSettingsPanel::WhiteNoiseSettingsPanel(QWidget* parent) : QGroupBox{pa
 
 Grid<int> WhiteNoiseSettingsPanel::generate()
 {
-    int width = widthSpinbox->value();
-    int height = heightSpinbox->value();
-    srand(time(nullptr));
-    Grid<int> grid{width, height};
-    for (int i = 0; i < grid.width; i++)
-    {
-        for (int j = 0; j < grid.height; j++)
-        {
-            grid[i][j] = rand() % 2;
-        }
-    }
-    return grid;
+    return whiteNoise(widthSpinbox->value(), heightSpinbox->value());
 }
