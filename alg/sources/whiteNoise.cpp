@@ -2,7 +2,8 @@
 
 Grid<int> whiteNoise(int width, int height, int onesPercent)
 {
-    srand(time(nullptr));
+    static unsigned int calls = 0;
+    srand(time(nullptr) + (++calls));
     Grid<int> grid{width, height};
     for (int i = 0; i < grid.width; i++)
     {
@@ -10,7 +11,7 @@ Grid<int> whiteNoise(int width, int height, int onesPercent)
         {
             int roll = rand() % 100;
             if (onesPercent > roll)
-                grid[i][j] = 1;
+                grid[i][j] = 255;
             else
                 grid[i][j] = 0;
         }

@@ -6,12 +6,12 @@
  * for a given algorithm. The component exposes them for the user to set, and when requested to generate,
  * the generate method of this interface is called, and it takes the members, 'packages' them into an
  * algorithm function call (thus making algorithm functions completely separate and reusable), and receives
- * Grid of values (most likely floats or ints) to work with.
+ * Grid of values ints to work with.
  */
 
 // Interface
-template <typename T> class Generator
+class Generator
 {
   public:
-    virtual Grid<T> generate() = 0;
+    virtual Grid<int> generate() = 0;
 };
