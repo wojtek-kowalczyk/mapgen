@@ -1,4 +1,5 @@
 #pragma once
+#include "headers/whiteNoiseSP.h"
 #include <QComboBox>
 #include <QGroupBox>
 #include <QPushButton>
@@ -11,10 +12,13 @@ class SettingsPanel : public QGroupBox
     QComboBox* dropdown;
     QPushButton* generateButton;
     // QPushButton* saveButton;
+    Generator* activeGenerator;
 
   public:
     SettingsPanel(QWidget* parent);
   public slots:
     void onGenerateButtonClicked();
     void onSaveButtonClicked();
+  signals:
+    void requestPreviewImageChange(QImage* newImage);
 };

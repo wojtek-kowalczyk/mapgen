@@ -15,6 +15,7 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     dropdown->addItem("Algorithm 1");
     dropdown->addItem("Algorithm 2");
     dropdown->addItem("Algorithm 3");
+
     QLabel* label1 = new QLabel("Label 1");
     QLabel* label2 = new QLabel("Label 2");
     QLabel* label3 = new QLabel("Label 3");
@@ -23,6 +24,8 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
 
     WhiteNoiseSettingsPanel* whiteNoiseSP = new WhiteNoiseSettingsPanel{this};
+    // temp - this will happen when user chooses the alg.
+    activeGenerator = static_cast<Generator*>(whiteNoiseSP);
 
     settingsLayout->addWidget(label1);
     settingsLayout->addWidget(label2);
@@ -35,6 +38,9 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
 
 void SettingsPanel::onGenerateButtonClicked()
 {
+    Grid<int> grid = activeGenerator->generate();
+    QImage* img = new QImage{dataToImage(grid, grid.width, grid.height)};
+    emit requestPreviewImageChange(img);
 }
 
 void SettingsPanel::onSaveButtonClicked()
