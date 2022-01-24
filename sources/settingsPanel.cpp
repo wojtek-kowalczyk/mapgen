@@ -1,6 +1,7 @@
 #include "headers/settingsPanel.h"
 #include "headers/config.h"
 
+#include "headers/whiteNoiseSP.h"
 #include <QLabel>
 #include <QVBoxLayout>
 
@@ -21,16 +22,14 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QPushButton* generateButton = new QPushButton("Generate");
     QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
 
-    // temp - this should be replaced by algorithm specific class deriving from QGroupBox
-    QGroupBox* tempGroupBox = new QGroupBox{"Algorithm settings"};
-    QVBoxLayout* tempBoxLayout = new QVBoxLayout(tempGroupBox);
-    tempBoxLayout->addStretch();
+    // todo - continue working on this
+    WhiteNoiseSettingsPanel* whiteNoiseSP = new WhiteNoiseSettingsPanel{this};
 
     settingsLayout->addWidget(label1);
     settingsLayout->addWidget(label2);
     settingsLayout->addWidget(label3);
     settingsLayout->addWidget(dropdown);
-    settingsLayout->addWidget(tempGroupBox);
+    settingsLayout->addWidget(whiteNoiseSP);
     settingsLayout->addStretch();
     settingsLayout->addWidget(generateButton);
 }

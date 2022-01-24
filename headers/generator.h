@@ -1,5 +1,5 @@
 #pragma once
-#include "headers/alg/grid.h"
+#include "alg/headers/grid.h"
 
 /*
  * The idea is that this class is extended by a GUI component that has members which represent settings

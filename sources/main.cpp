@@ -5,7 +5,7 @@
 #include <QWidget>
 
 #include "headers/imageGenerator.h"
-#include "headers/whiteNoise.h"
+#include "headers/whiteNoiseSP.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,13 +16,11 @@ int main(int argc, char* argv[])
     QImage placeholder{"small.png"};
     // temp
     WhiteNoiseSettingsPanel whiteNoiseGenerator{};
-    whiteNoiseGenerator.width = 30;
-    whiteNoiseGenerator.height = 30;
-    Grid<int> imageData = whiteNoiseGenerator.generate(); // free this
-    QImage image{dataToImage(imageData, 30, 30)};
+    Grid<int> imageData = whiteNoiseGenerator.generate();
+    // QImage image{dataToImage(imageData, 30, 30)};
 
     previewLabel->setAlignment(Qt::AlignCenter);
-    previewLabel->setPixmap(QPixmap::fromImage(image).scaled(600, 600, Qt::KeepAspectRatio));
+    previewLabel->setPixmap(QPixmap::fromImage(placeholder).scaled(600, 600, Qt::KeepAspectRatio));
 
     SettingsPanel* settingsPanel = new SettingsPanel(&window);
 
