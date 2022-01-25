@@ -1,23 +1,23 @@
-#include "headers/whiteNoiseSP.h"
+#include "headers/whiteNoiseManager.h"
 #include "alg/headers/whiteNoise.h"
 #include "headers/config.h"
 #include <QFormLayout>
 
-WhiteNoiseSettingsPanel::WhiteNoiseSettingsPanel(QWidget* parent) : QGroupBox{parent}
+WhiteNoiseManager::WhiteNoiseManager(QWidget* parent) : AlgorithmManager{parent}
 {
     QFormLayout* formLayout = new QFormLayout(this);
     formLayout->setSpacing(0);
 
     widthSpinbox = new QSpinBox{this};
-    widthSpinbox->setValue(50);
-    widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IAMGE_SIZE);
+    widthSpinbox->setValue(config::DEAFULT_IMAGE_WIDTH);
+    widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
 
     heightSpinbox = new QSpinBox{this};
-    heightSpinbox->setValue(50);
-    heightSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IAMGE_SIZE);
+    heightSpinbox->setValue(config::DEFAULT_PREVIEW_HEIGHT);
+    heightSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
 
     percentSpinbox = new QSpinBox(this);
-    percentSpinbox->setValue(50);
+    percentSpinbox->setValue(50); // magic number?
     percentSpinbox->setRange(0, 100);
 
     formLayout->addRow("width", widthSpinbox);
@@ -29,7 +29,7 @@ WhiteNoiseSettingsPanel::WhiteNoiseSettingsPanel(QWidget* parent) : QGroupBox{pa
     formLayout->setLabelAlignment(Qt::AlignLeft);
 }
 
-Grid<int> WhiteNoiseSettingsPanel::generate()
+Grid<int> WhiteNoiseManager::generate()
 {
     return whiteNoise(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value());
 }
