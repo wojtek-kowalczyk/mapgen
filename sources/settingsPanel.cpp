@@ -9,6 +9,7 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
 {
     setFixedWidth(config::SETTINGS_PANEL_WIDTH);
     QVBoxLayout* settingsLayout = new QVBoxLayout(this);
+    activeAlgorithmManager = nullptr;
 
     // temp
     WhiteNoiseManager* temp1 = new WhiteNoiseManager(this);
@@ -45,9 +46,12 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
 
 void SettingsPanel::onGenerateButtonClicked()
 {
-    Grid<int> grid = activeAlgorithmManager->generate();
-    QImage* img = new QImage{dataToImage(grid, grid.width, grid.height)};
-    emit requestPreviewImageChange(img);
+    if (activeAlgorithmManager)
+    {
+        Grid<int> grid = activeAlgorithmManager->generate();
+        QImage* img = new QImage{dataToImage(grid, grid.width, grid.height)};
+        emit requestPreviewImageChange(img);
+    }
 }
 
 void SettingsPanel::onSaveButtonClicked()

@@ -4,6 +4,7 @@
 
 Window::Window(QWidget* parent) : QWidget{parent}
 {
+    currentImage = nullptr;
     previewLabel = new QLabel(this);
     previewLabel->setAlignment(Qt::AlignCenter);
     previewLabel->setPixmap(QPixmap::fromImage(
@@ -20,6 +21,16 @@ Window::Window(QWidget* parent) : QWidget{parent}
 
 void Window::changePreviewImage(QImage* img)
 {
-    this->previewLabel->setPixmap(QPixmap::fromImage(*img).scaled(config::DEFAULT_PREVIEW_WIDTH,
-                                                                  config::DEFAULT_PREVIEW_HEIGHT, Qt::KeepAspectRatio));
+    if (currentImage)
+        delete currentImage;
+    currentImage = img;
+    this->previewLabel->setPixmap(
+        QPixmap::fromImage(*currentImage)
+            .scaled(config::DEFAULT_PREVIEW_WIDTH, config::DEFAULT_PREVIEW_HEIGHT, Qt::KeepAspectRatio));
+}
+
+void Window::cleanup()
+{
+    if (currentImage)
+        delete currentImage;
 }

@@ -13,7 +13,9 @@ class Window : public QWidget
     SettingsPanel* settingsPanel;
 
   public:
+    QImage* currentImage; // so that we save 8bit image and not 32bit pixmap
     Window(QWidget* parent = nullptr);
   public slots:
     void changePreviewImage(QImage*);
+    void cleanup();
 };
