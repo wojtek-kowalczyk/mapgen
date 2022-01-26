@@ -12,7 +12,7 @@ class SettingsPanel : public QGroupBox
   private:
     QComboBox* dropdown; // this could maybe store Pointer to algorithmManager in QVariant? (metatypes & stuff)
     QPushButton* generateButton;
-    // QPushButton* saveButton;
+    QPushButton* saveButton;
     AlgorithmManager* activeAlgorithmManager;
     std::map<QString, AlgorithmManager*> dropdownIndexToAlgManPtr;
 

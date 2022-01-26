@@ -7,40 +7,34 @@
 
 SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
 {
+    // Initial setup
     setFixedWidth(config::SETTINGS_PANEL_WIDTH);
-    QVBoxLayout* settingsLayout = new QVBoxLayout(this);
     activeAlgorithmManager = nullptr;
 
-    // temp
-    WhiteNoiseManager* temp1 = new WhiteNoiseManager(this);
-    WhiteNoiseManager* temp2 = new WhiteNoiseManager(this);
-    WhiteNoiseManager* temp3 = new WhiteNoiseManager(this);
-    temp1->widthSpinbox->setValue(1);
-    temp2->widthSpinbox->setValue(2);
-    temp3->widthSpinbox->setValue(3);
+    // Create Algorithm Managers
+    WhiteNoiseManager* whiteNoiseManager = new WhiteNoiseManager(this);
+    dropdownIndexToAlgManPtr[config::ALG_NAME_WHITE_NOISE] = whiteNoiseManager;
+    whiteNoiseManager->setVisible(false);
 
+    // Create settings panel components
     dropdown = new QComboBox(this);
     QObject::connect(dropdown, SIGNAL(currentTextChanged(const QString&)), this, SLOT(selectAlgorithm(const QString&)));
-    dropdown->addItem("Dummy Algorithm (not implemented)");
-    dropdown->addItem("temp1");
-    dropdown->addItem("temp2");
-    dropdown->addItem("temp3");
-
-    dropdownIndexToAlgManPtr["temp1"] = temp1;
-    dropdownIndexToAlgManPtr["temp2"] = temp2;
-    dropdownIndexToAlgManPtr["temp3"] = temp3;
+    // these names MUST match those in map
+    dropdown->addItem(config::ALG_NAME_WHITE_NOISE);
 
     QPushButton* generateButton = new QPushButton(config::GENERATE_BUTTON_TEXT);
     QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
+    QPushButton* saveButton = new QPushButton(config::SAVE_BUTTON_TEXT);
+    QObject::connect(saveButton, SIGNAL(clicked()), this, SLOT(onSaveButtonClicked()));
+    saveButton->setEnabled(false); // ! temporary - enable when save functionality is added
 
+    // Install a layout and add items to it.
+    QVBoxLayout* settingsLayout = new QVBoxLayout(this);
     settingsLayout->addWidget(dropdown);
-    settingsLayout->addWidget(temp1);
-    settingsLayout->addWidget(temp2);
-    settingsLayout->addWidget(temp3);
-    temp1->setVisible(false);
-    temp2->setVisible(false);
-    temp3->setVisible(false);
+    settingsLayout->addWidget(whiteNoiseManager);
+    // other algorithms go here
     settingsLayout->addStretch();
+    settingsLayout->addWidget(saveButton);
     settingsLayout->addWidget(generateButton);
 }
 
@@ -58,27 +52,16 @@ void SettingsPanel::onSaveButtonClicked()
 {
 }
 
-#include <iostream>
 void SettingsPanel::selectAlgorithm(const QString& key)
 {
-    try
+    // I'm not catching the possible std::out_of_range exception thrown by at()
+    // because this should never happen, and if it does, I want to know about it.
+    AlgorithmManager* selected = dropdownIndexToAlgManPtr.at(key);
+    if (selected)
     {
-        AlgorithmManager* selected = dropdownIndexToAlgManPtr.at(key);
-        std::cout << "got: " << selected << '\n';
-        if (selected)
-        {
-            if (activeAlgorithmManager)
-                activeAlgorithmManager->setVisible(false);
-            activeAlgorithmManager = selected;
-            activeAlgorithmManager->setVisible(true);
-        }
-        else
-        {
-            std::cout << "nullptr\n";
-        }
-    }
-    catch (std::out_of_range& e)
-    {
-        std::cout << "no algorithm manager found for key: " << key.toStdString() << '\n';
+        if (activeAlgorithmManager)
+            activeAlgorithmManager->setVisible(false);
+        activeAlgorithmManager = selected;
+        activeAlgorithmManager->setVisible(true);
     }
 }
