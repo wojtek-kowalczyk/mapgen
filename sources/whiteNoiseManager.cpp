@@ -13,7 +13,7 @@ WhiteNoiseManager::WhiteNoiseManager(QWidget* parent) : AlgorithmManager{parent}
     widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
 
     heightSpinbox = new QSpinBox{this};
-    heightSpinbox->setValue(config::DEFAULT_PREVIEW_HEIGHT);
+    heightSpinbox->setValue(config::DEAFULT_IMAGE_HEIGHT);
     heightSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
 
     percentSpinbox = new QSpinBox(this);

@@ -14,14 +14,14 @@ class SettingsPanel : public QGroupBox
     QPushButton* generateButton;
     // QPushButton* saveButton;
     AlgorithmManager* activeAlgorithmManager;
-    std::map<int, AlgorithmManager*> dropdownIndexToAlgManPtr;
+    std::map<QString, AlgorithmManager*> dropdownIndexToAlgManPtr;
 
   public:
     SettingsPanel(QWidget* parent);
   public slots:
     void onGenerateButtonClicked();
     void onSaveButtonClicked();
-    void selectAlgorithm(int);
+    void selectAlgorithm(const QString&);
   signals:
     void requestPreviewImageChange(QImage* newImage);
 };

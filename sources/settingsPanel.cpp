@@ -19,20 +19,15 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     temp3->widthSpinbox->setValue(3);
 
     dropdown = new QComboBox(this);
-    QObject::connect(dropdown, SIGNAL(currentIndexChanged(int)), this, SLOT(selectAlgorithm(int)));
+    QObject::connect(dropdown, SIGNAL(currentTextChanged(const QString&)), this, SLOT(selectAlgorithm(const QString&)));
     dropdown->addItem("Dummy Algorithm (not implemented)");
     dropdown->addItem("temp1");
     dropdown->addItem("temp2");
     dropdown->addItem("temp3");
-    // todo - start from here - rethink this, maybe come up with another solution
-    // order is important, this seems sketchy. I DON'T LIKE IT
-    // Do I trust that indexes will be 0,1,2,3,4... or maybe pass some int wrapped in QVariant as data??
-    // At this moment, I'm creating all the algmanagers, adding them to layout, setting to be invisible,
-    // and adding them to a map with respective int (dropdwon index) as a key. Then when user changes the selected alg
-    // i query the map to give me pointer to the right object and set this object to visible, and make it activeManager
-    dropdownIndexToAlgManPtr[1] = temp1;
-    dropdownIndexToAlgManPtr[2] = temp2;
-    dropdownIndexToAlgManPtr[3] = temp3;
+
+    dropdownIndexToAlgManPtr["temp1"] = temp1;
+    dropdownIndexToAlgManPtr["temp2"] = temp2;
+    dropdownIndexToAlgManPtr["temp3"] = temp3;
 
     QPushButton* generateButton = new QPushButton(config::GENERATE_BUTTON_TEXT);
     QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
@@ -60,13 +55,11 @@ void SettingsPanel::onSaveButtonClicked()
 }
 
 #include <iostream>
-void SettingsPanel::selectAlgorithm(int idx)
+void SettingsPanel::selectAlgorithm(const QString& key)
 {
-    // I need my custom type, but it seems like too much fuss
-    // QWidget* selected = dropdown->currentData().value<QWidget*>();
     try
     {
-        AlgorithmManager* selected = dropdownIndexToAlgManPtr.at(idx);
+        AlgorithmManager* selected = dropdownIndexToAlgManPtr.at(key);
         std::cout << "got: " << selected << '\n';
         if (selected)
         {
@@ -82,6 +75,6 @@ void SettingsPanel::selectAlgorithm(int idx)
     }
     catch (std::out_of_range& e)
     {
-        std::cout << "no algorithm manager found for index: " << idx << '\n';
+        std::cout << "no algorithm manager found for key: " << key.toStdString() << '\n';
     }
 }
