@@ -18,7 +18,7 @@ Planned Algorithms:
 
 I was working on linux (5.15.6-arch2-1), from the terminal (no Qt Creator)
 
-Qt version 5.15.2, qmake version 3.1
+Qt version 5.15.2, qmake version 3.1.
 [link to Qt Docs](https://doc.qt.io/qt-5.15/gettingstarted.html) should you have problems with Qt.
 
 ```
