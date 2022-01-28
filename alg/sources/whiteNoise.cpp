@@ -1,4 +1,4 @@
-#include "alg/headers/whiteNoise.h"
+#include "alg/headers/algorithms.h"
 
 Grid<int> whiteNoise(int width, int height, int onesPercent)
 {

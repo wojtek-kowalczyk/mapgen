@@ -1,4 +1,5 @@
 #include "headers/settingsPanel.h"
+#include "headers/CAManager.h"
 #include "headers/config.h"
 #include "headers/imageGenerator.h"
 #include "headers/whiteNoiseManager.h"
@@ -16,15 +17,20 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     dropdownIndexToAlgManPtr[config::ALG_NAME_WHITE_NOISE] = whiteNoiseManager;
     whiteNoiseManager->setVisible(false);
 
+    CellularAutomataManager* CAmanager = new CellularAutomataManager(this);
+    dropdownIndexToAlgManPtr[config::ALG_NAME_CELLULAR_AUTOMATA] = CAmanager;
+    CAmanager->setVisible(false);
+
     // Create settings panel components
     dropdown = new QComboBox(this);
     QObject::connect(dropdown, SIGNAL(currentTextChanged(const QString&)), this, SLOT(selectAlgorithm(const QString&)));
     // these names MUST match those in map
     dropdown->addItem(config::ALG_NAME_WHITE_NOISE);
+    dropdown->addItem(config::ALG_NAME_CELLULAR_AUTOMATA);
 
     QPushButton* generateButton = new QPushButton(config::GENERATE_BUTTON_TEXT);
-    QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
     QPushButton* saveButton = new QPushButton(config::SAVE_BUTTON_TEXT);
+    QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
     QObject::connect(saveButton, SIGNAL(clicked()), this, SLOT(onSaveButtonClicked()));
     saveButton->setEnabled(false); // ! temporary - enable when save functionality is added
 
@@ -32,12 +38,14 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QVBoxLayout* settingsLayout = new QVBoxLayout(this);
     settingsLayout->addWidget(dropdown);
     settingsLayout->addWidget(whiteNoiseManager);
+    settingsLayout->addWidget(CAmanager);
     // other algorithms go here
     settingsLayout->addStretch();
     settingsLayout->addWidget(saveButton);
     settingsLayout->addWidget(generateButton);
 }
 
+#include "alg/headers/algorithms.h"
 void SettingsPanel::onGenerateButtonClicked()
 {
     if (activeAlgorithmManager)

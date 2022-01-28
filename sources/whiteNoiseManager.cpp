@@ -1,5 +1,5 @@
 #include "headers/whiteNoiseManager.h"
-#include "alg/headers/whiteNoise.h"
+#include "alg/headers/algorithms.h"
 #include "headers/config.h"
 #include <QFormLayout>
 
