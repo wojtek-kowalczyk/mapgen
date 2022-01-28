@@ -9,6 +9,7 @@ namespace config
     inline constexpr int MAX_IMAGE_SIZE{16'384};
     inline constexpr int DEAFULT_IMAGE_WIDTH{50};
     inline constexpr int DEAFULT_IMAGE_HEIGHT{50};
+    inline constexpr int DEFAULT_FILL_PERCENT{50};
     inline constexpr int WHITE{255};
     inline constexpr int BLACK{0};
 

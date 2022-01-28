@@ -39,6 +39,17 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
     formLayout->addRow("tiling", tilingCheckBox);
     formLayout->addRow("white border?", whiteBorderCheckBox);
 
+    formLayout->labelForField(widthSpinbox)->setToolTip("width of the raw image. preview is scaled");
+    formLayout->labelForField(heightSpinbox)->setToolTip("height of the raw image. preview is scaled");
+    formLayout->labelForField(percentSpinbox)->setToolTip("what % of initial noise is made of white pixels, roughly");
+    formLayout->labelForField(neighborsRuleSpinBox)
+        ->setToolTip("How many pixels of given color have to be neighbors of a pixel, in order for this pixel to "
+                     "become their color. Set this to 4 for \"become majority\"-type behaviour");
+    formLayout->labelForField(iterationsSpinbox)->setToolTip("How many iteraions of the algorithm to apply");
+    formLayout->labelForField(tilingCheckBox)->setToolTip("do you want the image to be tile-able. DISABLES BORDER");
+    formLayout->labelForField(whiteBorderCheckBox)
+        ->setToolTip("What color do you want the border to be. HAS NO EFFECT WHEN TILING IS ON");
+
     // formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow); // might want to consider this
     formLayout->setFormAlignment(Qt::AlignHCenter | Qt::AlignTop);
     formLayout->setLabelAlignment(Qt::AlignLeft);

@@ -9,7 +9,6 @@ Window::Window(QWidget* parent) : QWidget{parent}
     previewLabel->setAlignment(Qt::AlignCenter);
     previewLabel->setPixmap(QPixmap::fromImage(
         QImage{config::DEFAULT_PREVIEW_WIDTH, config::DEFAULT_PREVIEW_HEIGHT, QImage::Format_Grayscale8}));
-
     SettingsPanel* settingsPanel = new SettingsPanel(this);
     QObject::connect(settingsPanel, SIGNAL(requestPreviewImageChange(QImage*)), this,
                      SLOT(changePreviewImage(QImage*)));
