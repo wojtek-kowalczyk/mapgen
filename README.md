@@ -6,13 +6,17 @@ Built with [Qt framework](https://qt.io).
 Implemented Algorithms:
 
 - White Noise
+- Cellular Automata
 
 Planned Algorithms:
 
 - Simplex Noise
 - Perlin Noise
-- Cellular Automata
 - Voronoi
+
+Planned Fetures: 
+- Multithreading
+- Saving maps to a file
 
 ## Building
 
