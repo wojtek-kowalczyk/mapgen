@@ -12,7 +12,7 @@ inline int customMod(int a, int b)
 // todo - could be: TILING, WHITE_BORDER, OUT_OF_BOUNDS_ARE_WHITE, etc.
 
 // no bounds checking takes place if tiling is false
-inline int countWhiteNeighbors(Grid<int> grid, int x, int y, bool tiling)
+int countWhiteNeighbors(Grid<int>& grid, int x, int y, bool tiling)
 {
     int countWhites{0};
     for (int nx = -1; nx < 2; nx++)
@@ -41,28 +41,30 @@ inline int countWhiteNeighbors(Grid<int> grid, int x, int y, bool tiling)
 // neighborsRule - how many neighbors of said color there has to be in order for a cell to become that color
 Grid<int> CellularAutomaton(Grid<int> initialConfig, bool tiling, bool whiteBorder, int iterations, int neighborsRule)
 {
-    Grid<int> grid{initialConfig}; // ? can i work on initialConfig directly?
+    Grid<int> newGrid{initialConfig};
     for (int i = 0; i < iterations; ++i)
     {
-        for (int x = 0; x < grid.width; x++)
+        for (int x = 0; x < newGrid.width; x++)
         {
-            for (int y = 0; y < grid.height; y++)
+            for (int y = 0; y < newGrid.height; y++)
             {
-                if ((x == 0 || y == 0 || x == grid.width - 1 || y == grid.height - 1) && !tiling)
+                if ((x == 0 || y == 0 || x == newGrid.width - 1 || y == newGrid.height - 1) && !tiling)
                 {
-                    grid[x][y] = whiteBorder ? config::WHITE : config::BLACK;
+                    newGrid[x][y] = whiteBorder ? config::WHITE : config::BLACK;
                     continue;
                 }
 
-                int countWhites{countWhiteNeighbors(grid, x, y, tiling)};
+                int countWhites{countWhiteNeighbors(initialConfig, x, y, tiling)};
                 if (countWhites > neighborsRule)
-                    grid[x][y] = config::WHITE;
+                    newGrid[x][y] = config::WHITE;
                 else if (countWhites < neighborsRule)
-                    grid[x][y] = config::BLACK;
+                    newGrid[x][y] = config::BLACK;
             }
         }
+        // sacrifice readability for performance. on next iterations initialConfig will just be previous image of a
+        initialConfig = newGrid;
     }
-    return grid;
+    return newGrid;
 }
 
 Grid<int> CellularAutomaton(int width, int height, int onesPercent, bool tiling, bool whiteBorder, int iterations,
