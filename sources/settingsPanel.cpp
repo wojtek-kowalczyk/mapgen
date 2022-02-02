@@ -1,8 +1,11 @@
 #include "headers/settingsPanel.h"
+#include "alg/headers/algorithms.h"
 #include "headers/CAManager.h"
 #include "headers/config.h"
 #include "headers/imageGenerator.h"
+#include "headers/perlinManager.h"
 #include "headers/whiteNoiseManager.h"
+
 #include <QLabel>
 #include <QVBoxLayout>
 
@@ -21,12 +24,17 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     dropdownIndexToAlgManPtr[config::ALG_NAME_CELLULAR_AUTOMATA] = CAmanager;
     CAmanager->setVisible(false);
 
+    PerlinNoiseManager* perlinManager = new PerlinNoiseManager(this);
+    dropdownIndexToAlgManPtr[config::ALG_NAME_PERLIN_NOISE] = perlinManager;
+    perlinManager->setVisible(false);
+
     // Create settings panel components
     dropdown = new QComboBox(this);
     QObject::connect(dropdown, SIGNAL(currentTextChanged(const QString&)), this, SLOT(selectAlgorithm(const QString&)));
     // these names MUST match those in map
     dropdown->addItem(config::ALG_NAME_WHITE_NOISE);
     dropdown->addItem(config::ALG_NAME_CELLULAR_AUTOMATA);
+    dropdown->addItem(config::ALG_NAME_PERLIN_NOISE);
 
     QPushButton* generateButton = new QPushButton(config::GENERATE_BUTTON_TEXT);
     QPushButton* saveButton = new QPushButton(config::SAVE_BUTTON_TEXT);
@@ -39,13 +47,12 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     settingsLayout->addWidget(dropdown);
     settingsLayout->addWidget(whiteNoiseManager);
     settingsLayout->addWidget(CAmanager);
-    // other algorithms go here
+    settingsLayout->addWidget(perlinManager);
     settingsLayout->addStretch();
     settingsLayout->addWidget(saveButton);
     settingsLayout->addWidget(generateButton);
 }
 
-#include "alg/headers/algorithms.h"
 void SettingsPanel::onGenerateButtonClicked()
 {
     if (activeAlgorithmManager)

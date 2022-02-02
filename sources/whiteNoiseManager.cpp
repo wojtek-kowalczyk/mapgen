@@ -10,16 +10,16 @@ WhiteNoiseManager::WhiteNoiseManager(QWidget* parent) : AlgorithmManager{parent}
     formLayout->setSpacing(0);
 
     widthSpinbox = new QSpinBox{this};
-    widthSpinbox->setValue(config::DEAFULT_IMAGE_WIDTH);
     widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
+    widthSpinbox->setValue(config::DEAFULT_IMAGE_WIDTH_SMALL);
 
     heightSpinbox = new QSpinBox{this};
-    heightSpinbox->setValue(config::DEAFULT_IMAGE_HEIGHT);
     heightSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
+    heightSpinbox->setValue(config::DEAFULT_IMAGE_HEIGHT_SMALL);
 
     percentSpinbox = new QSpinBox(this);
-    percentSpinbox->setValue(config::DEFAULT_FILL_PERCENT);
     percentSpinbox->setRange(0, 100);
+    percentSpinbox->setValue(config::DEFAULT_FILL_PERCENT);
 
     formLayout->addRow("width", widthSpinbox);
     formLayout->addRow("height", heightSpinbox);
