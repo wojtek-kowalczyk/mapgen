@@ -6,7 +6,7 @@
 
 PerlinNoiseManager::PerlinNoiseManager(QWidget* parent) : AlgorithmManager{parent}
 {
-    QFormLayout* formLayout = new QFormLayout(this);
+    formLayout = new QFormLayout(this);
     formLayout->setSpacing(0);
 
     widthSpinbox = new QSpinBox{this};
@@ -20,27 +20,29 @@ PerlinNoiseManager::PerlinNoiseManager(QWidget* parent) : AlgorithmManager{paren
     seedSpinbox = new QSpinBox{this};
     seedSpinbox->setRange(0, std::numeric_limits<int>::max());
     seedSpinbox->setValue(rand());
+    seedSpinbox->setVisible(false); // start with it disabled
 
     scaleSpinBox = new QDoubleSpinBox(this);
     scaleSpinBox->setRange(1.0, 500.0);
     scaleSpinBox->setValue(75.0);
 
     useSeedCheckbox = new QCheckBox(this);
+    QObject::connect(useSeedCheckbox, SIGNAL(stateChanged(int)), this, SLOT(onUseSeedCheckboxStateChanged(int)));
 
     formLayout->addRow("width", widthSpinbox);
     formLayout->addRow("height", heightSpinbox);
+    formLayout->addRow("scale", scaleSpinBox);
     formLayout->addRow("use seed", useSeedCheckbox);
     formLayout->addRow("seed", seedSpinbox);
-    formLayout->addRow("scale", scaleSpinBox);
 
     formLayout->labelForField(widthSpinbox)->setToolTip("width of the raw image. preview is scaled");
     formLayout->labelForField(heightSpinbox)->setToolTip("height of the raw image. preview is scaled");
+    formLayout->labelForField(scaleSpinBox)->setToolTip("Determines how \"zoomed in\" the image is");
     formLayout->labelForField(useSeedCheckbox)
         ->setToolTip("when checked uses the seed below to generate new permutations"
                      ", otherwise uses reference permutations");
-    formLayout->labelForField(seedSpinbox)
-        ->setToolTip("seed to generate permutations. Only applicable if USE SEED is checked");
-    formLayout->labelForField(scaleSpinBox)->setToolTip("Determines how \"zoomed in\" the image is");
+    formLayout->labelForField(seedSpinbox)->setToolTip("seed to generate permutations.");
+    formLayout->labelForField(seedSpinbox)->setVisible(false); // start with it disabled
 
     formLayout->setFormAlignment(Qt::AlignHCenter | Qt::AlignTop);
     formLayout->setLabelAlignment(Qt::AlignLeft);
@@ -62,4 +64,18 @@ Grid<int> PerlinNoiseManager::generate()
         }
     }
     return pixelValues;
+}
+
+void PerlinNoiseManager::onUseSeedCheckboxStateChanged(int state)
+{
+    if (state == Qt::Checked)
+    {
+        seedSpinbox->setVisible(true);
+        formLayout->labelForField(seedSpinbox)->setVisible(true);
+    }
+    else
+    {
+        seedSpinbox->setVisible(false);
+        formLayout->labelForField(seedSpinbox)->setVisible(false);
+    }
 }

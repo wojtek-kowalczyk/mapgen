@@ -1,11 +1,13 @@
 #pragma once
 #include "headers/algorithmManager.h"
 #include <QCheckBox>
+#include <QFormLayout>
 #include <QSpinBox>
-
 class CellularAutomataManager : public AlgorithmManager
 {
-  public:
+    Q_OBJECT
+  private:
+    QFormLayout* formLayout;
     QSpinBox* widthSpinbox;
     QSpinBox* heightSpinbox;
     QSpinBox* percentSpinbox;
@@ -17,4 +19,6 @@ class CellularAutomataManager : public AlgorithmManager
   public:
     CellularAutomataManager(QWidget* parent = nullptr);
     Grid<int> generate() override;
+  public slots:
+    void onTilingCheckboxStateChange(int);
 };

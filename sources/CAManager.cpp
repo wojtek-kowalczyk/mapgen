@@ -1,11 +1,10 @@
 #include "headers/CAManager.h"
 #include "alg/headers/algorithms.h"
 #include "headers/config.h"
-#include <QFormLayout>
 
 CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmManager{parent}
 {
-    QFormLayout* formLayout = new QFormLayout(this);
+    formLayout = new QFormLayout(this);
     formLayout->setSpacing(0);
 
     widthSpinbox = new QSpinBox{this};
@@ -29,6 +28,7 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
     iterationsSpinbox->setValue(5);
 
     tilingCheckBox = new QCheckBox(this);
+    QObject::connect(tilingCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onTilingCheckboxStateChange(int)));
     whiteBorderCheckBox = new QCheckBox(this);
 
     formLayout->addRow("width", widthSpinbox);
@@ -37,7 +37,7 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
     formLayout->addRow("neighbors Rule", neighborsRuleSpinBox);
     formLayout->addRow("iterations", iterationsSpinbox);
     formLayout->addRow("tiling", tilingCheckBox);
-    formLayout->addRow("white border?", whiteBorderCheckBox);
+    formLayout->addRow("white border", whiteBorderCheckBox);
 
     formLayout->labelForField(widthSpinbox)->setToolTip("width of the raw image. preview is scaled");
     formLayout->labelForField(heightSpinbox)->setToolTip("height of the raw image. preview is scaled");
@@ -47,8 +47,7 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
                      "become their color. Set this to 4 for \"become majority\"-type behaviour");
     formLayout->labelForField(iterationsSpinbox)->setToolTip("How many iteraions of the algorithm to apply");
     formLayout->labelForField(tilingCheckBox)->setToolTip("do you want the image to be tile-able. DISABLES BORDER");
-    formLayout->labelForField(whiteBorderCheckBox)
-        ->setToolTip("What color do you want the border to be. HAS NO EFFECT WHEN TILING IS ON");
+    formLayout->labelForField(whiteBorderCheckBox)->setToolTip("What color do you want the border to be.");
 
     // formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow); // might want to consider this
     formLayout->setFormAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -60,4 +59,19 @@ Grid<int> CellularAutomataManager::generate()
     return CellularAutomaton(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value(),
                              tilingCheckBox->isChecked(), whiteBorderCheckBox->isChecked(), iterationsSpinbox->value(),
                              neighborsRuleSpinBox->value());
+}
+
+void CellularAutomataManager::onTilingCheckboxStateChange(int state)
+{
+    // When Tiling is checked border has no effect, so hide it
+    if (state == Qt::Checked)
+    {
+        whiteBorderCheckBox->setVisible(false);
+        formLayout->labelForField(whiteBorderCheckBox)->setVisible(false);
+    }
+    else
+    {
+        whiteBorderCheckBox->setVisible(true);
+        formLayout->labelForField(whiteBorderCheckBox)->setVisible(true);
+    }
 }
