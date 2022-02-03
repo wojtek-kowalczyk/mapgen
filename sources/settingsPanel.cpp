@@ -6,6 +6,7 @@
 #include "headers/perlinManager.h"
 #include "headers/whiteNoiseManager.h"
 
+#include <QFileDialog>
 #include <QLabel>
 #include <QVBoxLayout>
 
@@ -40,7 +41,6 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     QPushButton* saveButton = new QPushButton(config::SAVE_BUTTON_TEXT);
     QObject::connect(generateButton, SIGNAL(clicked()), this, SLOT(onGenerateButtonClicked()));
     QObject::connect(saveButton, SIGNAL(clicked()), this, SLOT(onSaveButtonClicked()));
-    saveButton->setEnabled(false); // ! temporary - enable when save functionality is added
 
     // Install a layout and add items to it.
     QVBoxLayout* settingsLayout = new QVBoxLayout(this);
@@ -65,6 +65,13 @@ void SettingsPanel::onGenerateButtonClicked()
 
 void SettingsPanel::onSaveButtonClicked()
 {
+    QFileDialog fileDialog(this);
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog.setFileMode(QFileDialog::AnyFile);
+    QStringList fileNames;
+    if (fileDialog.exec())
+        fileNames = fileDialog.selectedFiles();
+    emit requestPreviewImageSave(fileNames[0]);
 }
 
 void SettingsPanel::selectAlgorithm(const QString& key)

@@ -24,4 +24,5 @@ class SettingsPanel : public QGroupBox
     void selectAlgorithm(const QString&);
   signals:
     void requestPreviewImageChange(QImage* newImage);
+    void requestPreviewImageSave(QString fileName);
 };

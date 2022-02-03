@@ -16,8 +16,9 @@ class Window : public QWidget
   public:
     QImage* currentImage; // so that we save 8bit image and not 32bit pixmap
     Window(QWidget* parent = nullptr);
-    void resizeEvent(QResizeEvent* event) override;
+    void resizeEvent(QResizeEvent*) override;
   public slots:
     void changePreviewImage(QImage*);
+    void saveImage(QString path);
     void cleanup();
 };
