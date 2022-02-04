@@ -24,6 +24,8 @@ Planned Fetures:
 The C++ implementation of Perlin Noise was taken from: https://github.com/sol-prog/Perlin_Noise.
 See [this article](https://solarianprogrammer.com/2012/07/18/perlin-noise-cpp-11/) for more info.
 
+The C implementation of Open Simplex Noise was taken from https://github.com/MarcoCiaramella/OpenSimplex2
+
 ## Building
 
 I was working on linux (5.15.6-arch2-1), from the terminal (no Qt Creator)

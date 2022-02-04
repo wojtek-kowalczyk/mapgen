@@ -3,6 +3,7 @@
 #include "headers/CAManager.h"
 #include "headers/config.h"
 #include "headers/imageGenerator.h"
+#include "headers/openSimplex2FManager.h"
 #include "headers/perlinManager.h"
 #include "headers/whiteNoiseManager.h"
 
@@ -29,6 +30,10 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     dropdownIndexToAlgManPtr[config::ALG_NAME_PERLIN_NOISE] = perlinManager;
     perlinManager->setVisible(false);
 
+    OpenSimplex2FManager* openSimplex2FManager = new OpenSimplex2FManager(this);
+    dropdownIndexToAlgManPtr[config::ALG_NAME_OPEN_SIMPLEX_2F] = openSimplex2FManager;
+    openSimplex2FManager->setVisible(false);
+
     // Create settings panel components
     dropdown = new QComboBox(this);
     QObject::connect(dropdown, SIGNAL(currentTextChanged(const QString&)), this, SLOT(selectAlgorithm(const QString&)));
@@ -36,6 +41,7 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     dropdown->addItem(config::ALG_NAME_WHITE_NOISE);
     dropdown->addItem(config::ALG_NAME_CELLULAR_AUTOMATA);
     dropdown->addItem(config::ALG_NAME_PERLIN_NOISE);
+    dropdown->addItem(config::ALG_NAME_OPEN_SIMPLEX_2F);
 
     QPushButton* generateButton = new QPushButton(config::GENERATE_BUTTON_TEXT);
     QPushButton* saveButton = new QPushButton(config::SAVE_BUTTON_TEXT);
@@ -48,6 +54,7 @@ SettingsPanel::SettingsPanel(QWidget* parent) : QGroupBox{"Settings", parent}
     settingsLayout->addWidget(whiteNoiseManager);
     settingsLayout->addWidget(CAmanager);
     settingsLayout->addWidget(perlinManager);
+    settingsLayout->addWidget(openSimplex2FManager);
     settingsLayout->addStretch();
     settingsLayout->addWidget(saveButton);
     settingsLayout->addWidget(generateButton);

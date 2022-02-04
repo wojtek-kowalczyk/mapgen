@@ -22,6 +22,7 @@ namespace config
     inline const char* ALG_NAME_WHITE_NOISE{"White Noise"};
     inline const char* ALG_NAME_CELLULAR_AUTOMATA{"Cellular Automata"};
     inline const char* ALG_NAME_PERLIN_NOISE{"Perlin Noise"};
+    inline const char* ALG_NAME_OPEN_SIMPLEX_2F{"OpenSimplex2F Noise"};
     inline const char* GENERATE_BUTTON_TEXT{"Generate"};
     inline const char* SAVE_BUTTON_TEXT{"Save as..."};
 } // namespace config

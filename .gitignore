@@ -4,3 +4,4 @@ MapGen
 .qmake.stash
 Makefile
 *.pro
+outputTests
