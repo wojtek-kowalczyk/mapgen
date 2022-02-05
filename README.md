@@ -24,7 +24,7 @@ The C implementation of Open Simplex Noise was taken from https://github.com/Mar
 
 ## Download and run (Windows only)
 
-Download the `MapGen.zip' file, extract and run the executable.
+Download the `MapGen.zip` file, extract and run the executable.
 
 ## Building
 
