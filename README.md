@@ -9,15 +9,11 @@ Implemented Algorithms:
 - Cellular Automata
 - OpenSimplex2F
 - Perlin Noise
-
-Planned Algorithms:
-
 - Voronoi
 
 Planned Fetures:
 
 - Multithreading
-- Saving maps to a file
 
 ## Credits
 
