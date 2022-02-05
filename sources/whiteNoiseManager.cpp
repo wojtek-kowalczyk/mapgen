@@ -1,12 +1,12 @@
 #include "headers/whiteNoiseManager.h"
 #include "alg/headers/algorithms.h"
 #include "headers/config.h"
-#include <QFormLayout>
 #include <QLabel>
+#include <ctime>
 
 WhiteNoiseManager::WhiteNoiseManager(QWidget* parent) : AlgorithmManager{parent}
 {
-    QFormLayout* formLayout = new QFormLayout(this);
+    formLayout = new QFormLayout(this);
     formLayout->setSpacing(0);
 
     widthSpinbox = new QSpinBox{this};
@@ -21,12 +21,29 @@ WhiteNoiseManager::WhiteNoiseManager(QWidget* parent) : AlgorithmManager{parent}
     percentSpinbox->setRange(0, 100);
     percentSpinbox->setValue(config::DEFAULT_FILL_PERCENT);
 
+    seedSpinbox = new QSpinBox{this};
+    seedSpinbox->setRange(0, std::numeric_limits<int>::max());
+    seedSpinbox->setValue(rand());
+    seedSpinbox->setVisible(false); // start with this disabled
+
+    useRandomSeedCheckbox = new QCheckBox(this);
+    useRandomSeedCheckbox->setChecked(true);
+    QObject::connect(useRandomSeedCheckbox, SIGNAL(stateChanged(int)), this,
+                     SLOT(onUseRandomSeedCheckboxStateChanged(int)));
+
     formLayout->addRow("width", widthSpinbox);
     formLayout->addRow("height", heightSpinbox);
     formLayout->addRow("white %", percentSpinbox);
+    formLayout->addRow("use random seed", useRandomSeedCheckbox);
+    formLayout->addRow("seed", seedSpinbox);
+    formLayout->labelForField(seedSpinbox)->setVisible(false); // initially hidden
+
     formLayout->labelForField(widthSpinbox)->setToolTip("width of the raw image. preview is scaled");
     formLayout->labelForField(heightSpinbox)->setToolTip("height of the raw image. preview is scaled");
     formLayout->labelForField(percentSpinbox)->setToolTip("what % of image is made of white pixels, roughly");
+    formLayout->labelForField(useRandomSeedCheckbox)
+        ->setToolTip("If checked, the seed will be randomized for each generation");
+    formLayout->labelForField(seedSpinbox)->setToolTip("seed for random number generator");
 
     // formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow); // might want to consider this
     formLayout->setFormAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -35,5 +52,28 @@ WhiteNoiseManager::WhiteNoiseManager(QWidget* parent) : AlgorithmManager{parent}
 
 Grid<int> WhiteNoiseManager::generate()
 {
-    return whiteNoise(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value());
+    if (useRandomSeedCheckbox->isChecked())
+    {
+        static int calls{0};
+        return whiteNoise(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value(),
+                          time(nullptr) + (++calls));
+    }
+    else
+    {
+        return whiteNoise(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value(), seedSpinbox->value());
+    }
+}
+
+void WhiteNoiseManager::onUseRandomSeedCheckboxStateChanged(int state)
+{
+    if (state == Qt::Unchecked)
+    {
+        seedSpinbox->setVisible(true);
+        formLayout->labelForField(seedSpinbox)->setVisible(true);
+    }
+    else
+    {
+        seedSpinbox->setVisible(false);
+        formLayout->labelForField(seedSpinbox)->setVisible(false);
+    }
 }
