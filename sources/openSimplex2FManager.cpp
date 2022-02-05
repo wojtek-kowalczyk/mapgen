@@ -11,7 +11,7 @@ extern "C"
 OpenSimplex2FManager::OpenSimplex2FManager(QWidget* parent) : AlgorithmManager{parent}
 {
     formLayout = new QFormLayout(this);
-    formLayout->setSpacing(0);
+    formLayout->setSpacing(10);
 
     widthSpinbox = new QSpinBox{this};
     widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
