@@ -7,30 +7,28 @@ Implemented Algorithms:
 
 - White Noise
 - Cellular Automata
-
-Planned Algorithms:
-
-- Simplex Noise
+- OpenSimplex2F
 - Perlin Noise
 - Voronoi
 
 Planned Fetures:
 
 - Multithreading
-- Saving maps to a file
 
 ## Credits
 
 The C++ implementation of Perlin Noise was taken from: https://github.com/sol-prog/Perlin_Noise.
 See [this article](https://solarianprogrammer.com/2012/07/18/perlin-noise-cpp-11/) for more info.
 
+The C implementation of Open Simplex Noise was taken from https://github.com/MarcoCiaramella/OpenSimplex2
+
 ## Building
 
-I was working on linux (5.15.6-arch2-1), from the terminal (no Qt Creator)
+Tested on linux (5.15.6-arch2-1), no Qt Creator
 
 Qt version 5.15.2, qmake version 3.1.
 
-[link to Qt Docs](https://doc.qt.io/qt-5.15/gettingstarted.html) should you have problems with Qt.
+[link to Qt Docs](https://doc.qt.io/qt-5.15/gettingstarted.html)
 
 ```
 qmake -project QT+=widgets

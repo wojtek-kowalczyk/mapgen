@@ -68,7 +68,8 @@ Grid<int> CellularAutomaton(Grid<int> initialConfig, bool tiling, bool whiteBord
 }
 
 Grid<int> CellularAutomaton(int width, int height, int onesPercent, bool tiling, bool whiteBorder, int iterations,
-                            int neighborsRule)
+                            int neighborsRule, unsigned int seed)
 {
-    return CellularAutomaton(whiteNoise(width, height, onesPercent), tiling, whiteBorder, iterations, neighborsRule);
+    return CellularAutomaton(whiteNoise(width, height, onesPercent, seed), tiling, whiteBorder, iterations,
+                             neighborsRule);
 }

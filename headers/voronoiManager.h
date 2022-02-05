@@ -1,22 +1,24 @@
 #pragma once
 #include "headers/algorithmManager.h"
 #include <QCheckBox>
+#include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QSpinBox>
 
-class WhiteNoiseManager : public AlgorithmManager
+class VoronoiManager : public AlgorithmManager
 {
     Q_OBJECT
-  public:
+  private:
     QFormLayout* formLayout;
     QSpinBox* widthSpinbox;
     QSpinBox* heightSpinbox;
-    QSpinBox* percentSpinbox;
+    QSpinBox* pointsSpinbox;
     QSpinBox* seedSpinbox;
     QCheckBox* useRandomSeedCheckbox;
+    QDoubleSpinBox* exponentSpinbox;
 
   public:
-    WhiteNoiseManager(QWidget* parent = nullptr);
+    VoronoiManager(QWidget* parent = nullptr);
     Grid<int> generate() override;
   public slots:
     void onUseRandomSeedCheckboxStateChanged(int state);

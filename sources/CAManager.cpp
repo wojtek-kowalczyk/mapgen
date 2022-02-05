@@ -1,11 +1,12 @@
 #include "headers/CAManager.h"
 #include "alg/headers/algorithms.h"
 #include "headers/config.h"
+#include <ctime>
 
 CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmManager{parent}
 {
     formLayout = new QFormLayout(this);
-    formLayout->setSpacing(0);
+    formLayout->setSpacing(10);
 
     widthSpinbox = new QSpinBox{this};
     widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
@@ -27,9 +28,19 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
     iterationsSpinbox->setRange(1, 10);
     iterationsSpinbox->setValue(5);
 
+    seedSpinbox = new QSpinBox{this};
+    seedSpinbox->setRange(0, std::numeric_limits<int>::max());
+    seedSpinbox->setValue(rand());
+    seedSpinbox->setVisible(false); // start with this disabled
+
     tilingCheckBox = new QCheckBox(this);
     QObject::connect(tilingCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onTilingCheckboxStateChange(int)));
     whiteBorderCheckBox = new QCheckBox(this);
+
+    useRandomSeedCheckbox = new QCheckBox(this);
+    useRandomSeedCheckbox->setChecked(true);
+    QObject::connect(useRandomSeedCheckbox, SIGNAL(stateChanged(int)), this,
+                     SLOT(onUseRandomSeedCheckboxStateChanged(int)));
 
     formLayout->addRow("width", widthSpinbox);
     formLayout->addRow("height", heightSpinbox);
@@ -38,6 +49,9 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
     formLayout->addRow("iterations", iterationsSpinbox);
     formLayout->addRow("tiling", tilingCheckBox);
     formLayout->addRow("white border", whiteBorderCheckBox);
+    formLayout->addRow("use random seed", useRandomSeedCheckbox);
+    formLayout->addRow("seed", seedSpinbox);
+    formLayout->labelForField(seedSpinbox)->setVisible(false); // initially hidden
 
     formLayout->labelForField(widthSpinbox)->setToolTip("width of the raw image. preview is scaled");
     formLayout->labelForField(heightSpinbox)->setToolTip("height of the raw image. preview is scaled");
@@ -48,6 +62,9 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
     formLayout->labelForField(iterationsSpinbox)->setToolTip("How many iteraions of the algorithm to apply");
     formLayout->labelForField(tilingCheckBox)->setToolTip("do you want the image to be tile-able. DISABLES BORDER");
     formLayout->labelForField(whiteBorderCheckBox)->setToolTip("What color do you want the border to be.");
+    formLayout->labelForField(useRandomSeedCheckbox)
+        ->setToolTip("if true, seed will be randomized for each generation");
+    formLayout->labelForField(seedSpinbox)->setToolTip("the seed for random generator");
 
     // formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow); // might want to consider this
     formLayout->setFormAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -56,9 +73,19 @@ CellularAutomataManager::CellularAutomataManager(QWidget* parent) : AlgorithmMan
 
 Grid<int> CellularAutomataManager::generate()
 {
-    return CellularAutomaton(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value(),
-                             tilingCheckBox->isChecked(), whiteBorderCheckBox->isChecked(), iterationsSpinbox->value(),
-                             neighborsRuleSpinBox->value());
+    if (useRandomSeedCheckbox->isChecked())
+    {
+        static int calls{0};
+        return CellularAutomaton(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value(),
+                                 tilingCheckBox->isChecked(), whiteBorderCheckBox->isChecked(),
+                                 iterationsSpinbox->value(), neighborsRuleSpinBox->value(), time(nullptr) + (++calls));
+    }
+    else
+    {
+        return CellularAutomaton(widthSpinbox->value(), heightSpinbox->value(), percentSpinbox->value(),
+                                 tilingCheckBox->isChecked(), whiteBorderCheckBox->isChecked(),
+                                 iterationsSpinbox->value(), neighborsRuleSpinBox->value(), seedSpinbox->value());
+    }
 }
 
 void CellularAutomataManager::onTilingCheckboxStateChange(int state)
@@ -73,5 +100,19 @@ void CellularAutomataManager::onTilingCheckboxStateChange(int state)
     {
         whiteBorderCheckBox->setVisible(true);
         formLayout->labelForField(whiteBorderCheckBox)->setVisible(true);
+    }
+}
+
+void CellularAutomataManager::onUseRandomSeedCheckboxStateChanged(int state)
+{
+    if (state == Qt::Unchecked)
+    {
+        seedSpinbox->setVisible(true);
+        formLayout->labelForField(seedSpinbox)->setVisible(true);
+    }
+    else
+    {
+        seedSpinbox->setVisible(false);
+        formLayout->labelForField(seedSpinbox)->setVisible(false);
     }
 }

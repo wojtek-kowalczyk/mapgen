@@ -1,9 +1,9 @@
 #include "alg/headers/algorithms.h"
 
-Grid<int> whiteNoise(int width, int height, int onesPercent)
+Grid<int> whiteNoise(int width, int height, int onesPercent, unsigned int seed)
 {
-    static unsigned int calls = 0;
-    srand(time(nullptr) + (++calls));
+    // srand(time(nullptr) + (++calls));
+    srand(seed);
     Grid<int> grid{width, height};
     for (int i = 0; i < grid.width; i++)
     {
