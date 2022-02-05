@@ -3,5 +3,5 @@ moc_*
 MapGen
 .qmake.stash
 Makefile
-*.pro
+# *.pro
 outputTests
