@@ -1,6 +1,7 @@
 #pragma once
 #include "headers/algorithmManager.h"
 #include <QCheckBox>
+#include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QSpinBox>
 
@@ -14,6 +15,7 @@ class VoronoiManager : public AlgorithmManager
     QSpinBox* pointsSpinbox;
     QSpinBox* seedSpinbox;
     QCheckBox* useRandomSeedCheckbox;
+    QDoubleSpinBox* exponentSpinbox;
 
   public:
     VoronoiManager(QWidget* parent = nullptr);

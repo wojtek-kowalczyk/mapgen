@@ -14,4 +14,4 @@ Grid<int> CellularAutomaton(Grid<int> initialConfig, bool tiling, bool whiteBord
                             int neighborsRule = 4);
 Grid<int> CellularAutomaton(int width, int height, int onesPercent, bool tiling, bool whiteBorder, int iterations,
                             int neighborsRule = 4);
-Grid<int> voronoi(int width, int height, int points, unsigned int seed = 0);
+Grid<int> voronoi(int width, int height, int points, double exponent = 2.0, unsigned int seed = 0);

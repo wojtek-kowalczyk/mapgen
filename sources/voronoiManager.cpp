@@ -10,11 +10,11 @@ VoronoiManager::VoronoiManager(QWidget* parent) : AlgorithmManager{parent}
 
     widthSpinbox = new QSpinBox{this};
     widthSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
-    widthSpinbox->setValue(config::DEAFULT_IMAGE_WIDTH_SMALL);
+    widthSpinbox->setValue(config::DEAFULT_IMAGE_WIDTH_MEDIUM);
 
     heightSpinbox = new QSpinBox{this};
     heightSpinbox->setRange(config::MIN_IMAGE_SIZE, config::MAX_IMAGE_SIZE);
-    heightSpinbox->setValue(config::DEAFULT_IMAGE_HEIGHT_SMALL);
+    heightSpinbox->setValue(config::DEAFULT_IMAGE_HEIGHT_MEDIUM);
 
     pointsSpinbox = new QSpinBox(this);
     pointsSpinbox->setRange(1, 2000);
@@ -25,6 +25,10 @@ VoronoiManager::VoronoiManager(QWidget* parent) : AlgorithmManager{parent}
     seedSpinbox->setValue(rand());
     seedSpinbox->setVisible(false); // start with this disabled
 
+    exponentSpinbox = new QDoubleSpinBox{this};
+    exponentSpinbox->setRange(0.1, 10);
+    exponentSpinbox->setValue(2);
+
     useRandomSeedCheckbox = new QCheckBox(this);
     useRandomSeedCheckbox->setChecked(true);
     QObject::connect(useRandomSeedCheckbox, SIGNAL(stateChanged(int)), this,
@@ -33,6 +37,7 @@ VoronoiManager::VoronoiManager(QWidget* parent) : AlgorithmManager{parent}
     formLayout->addRow("width", widthSpinbox);
     formLayout->addRow("height", heightSpinbox);
     formLayout->addRow("number of points", pointsSpinbox);
+    formLayout->addRow("exponent", exponentSpinbox);
     formLayout->addRow("use random seed", useRandomSeedCheckbox);
     formLayout->addRow("seed", seedSpinbox);
     formLayout->labelForField(seedSpinbox)->setVisible(false); // start with this disabled
@@ -41,6 +46,8 @@ VoronoiManager::VoronoiManager(QWidget* parent) : AlgorithmManager{parent}
     formLayout->labelForField(heightSpinbox)->setToolTip("height of the raw image. preview is scaled");
     formLayout->labelForField(pointsSpinbox)
         ->setToolTip("number of points used int the algorithm. equivalent to number of cells");
+    formLayout->labelForField(exponentSpinbox)
+        ->setToolTip("The exponent p in Minkowsky's distance function. Set this to 2 for euclidean distance");
     formLayout->labelForField(useRandomSeedCheckbox)
         ->setToolTip("if true, seed will be randomized for each generation");
     formLayout->labelForField(seedSpinbox)->setToolTip("the seed for random generator");
@@ -54,12 +61,13 @@ Grid<int> VoronoiManager::generate()
     if (useRandomSeedCheckbox->isChecked())
     {
         static int calls = 0;
-        return voronoi(widthSpinbox->value(), heightSpinbox->value(), pointsSpinbox->value(),
+        return voronoi(widthSpinbox->value(), heightSpinbox->value(), pointsSpinbox->value(), exponentSpinbox->value(),
                        time(nullptr) + (++calls));
     }
     else
     {
-        return voronoi(widthSpinbox->value(), heightSpinbox->value(), pointsSpinbox->value(), seedSpinbox->value());
+        return voronoi(widthSpinbox->value(), heightSpinbox->value(), pointsSpinbox->value(), exponentSpinbox->value(),
+                       seedSpinbox->value());
     }
 }
 
