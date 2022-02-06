@@ -5,3 +5,4 @@ MapGen
 Makefile
 # *.pro
 outputTests
+.vscode

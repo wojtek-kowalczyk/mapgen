@@ -5,15 +5,11 @@ Built with [Qt framework](https://qt.io).
 
 Implemented Algorithms:
 
-- White Noise
-- Cellular Automata
-- OpenSimplex2F
-- Perlin Noise
-- Voronoi
-
-Planned Fetures:
-
-- Multithreading
+- [White Noise](https://en.wikipedia.org/wiki/White_noise)
+- [Cellular Automata](https://en.wikipedia.org/wiki/Cellular_automaton)
+- [OpenSimplex2F](https://en.wikipedia.org/wiki/OpenSimplex_noise)
+- [Perlin Noise](https://en.wikipedia.org/wiki/Perlin_noise)
+- [Voronoi](https://en.wikipedia.org/wiki/Voronoi_diagram) (the organic cell-like version, see [this](https://docs.blender.org/manual/en/latest/_images/render_shader-nodes_textures_voronoi_smoothness-distance-zero.png))
 
 ## Credits
 
@@ -24,11 +20,11 @@ The C implementation of Open Simplex Noise was taken from https://github.com/Mar
 
 ## Download and run (Windows only)
 
-Download the `MapGen.zip` file, extract and run the executable.
+Download the `MapGen.zip` file from Releases, extract and run the executable.
 
 ## Building
 
-Tested on linux (5.15.6-arch2-1), no Qt Creator
+Developed on linux (5.15.6-arch2-1), no Qt Creator
 
 Qt version 5.15.2, qmake version 3.1.
 
