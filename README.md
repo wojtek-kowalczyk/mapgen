@@ -18,6 +18,10 @@ See [this article](https://solarianprogrammer.com/2012/07/18/perlin-noise-cpp-11
 
 The C implementation of Open Simplex Noise was taken from https://github.com/MarcoCiaramella/OpenSimplex2
 
+# Web Assembly build (play in browser)
+
+https://szypkizolw.itch.io/mapgen
+
 ## Download and run (Windows only)
 
 Download the `MapGen.zip` file from Releases, extract and run the executable.
